@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app_pro/app/modules/create_list/create_list_view.dart';
+import 'package:note_app_pro/app/modules/create_note/create_note_view.dart';
 import 'package:note_app_pro/app/modules/home/home_controller.dart';
 import 'package:note_app_pro/app/modules/home/widgets/section.dart';
 import 'package:note_app_pro/app/themes/style.dart';
@@ -36,7 +37,9 @@ class HomeView extends StatelessWidget {
                   );
                 }),
                 SizedBox(height: 20,),
-                Section(onToday: (){},onSchedule: (){}  ,),
+                Section(onToday: (){
+                  Get.to(CreateScheduleView());
+                },onSchedule: (){}  ,),
                 SizedBox(height: 20,),
                 SectionCalender(
                     imgPath: "assets/zip.png",
