@@ -8,7 +8,7 @@ class HomeController extends GetxController {
   var textController = TextEditingController();
   var isClear = true.obs;
   var calendars = List<ListModel>().obs;
-
+  DateTime now = DateTime.now();
 
   void cancelSearch(){
     textController.text = '';
