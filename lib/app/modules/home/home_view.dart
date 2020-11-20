@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:note_app_pro/app/modules/create_list/create_list_view.dart';
-import 'package:note_app_pro/app/modules/create_note/create_note_view.dart';
+import 'package:note_app_pro/app/modules/create_note/list_note_view.dart';
 import 'package:note_app_pro/app/modules/home/home_controller.dart';
 import 'package:note_app_pro/app/modules/home/widgets/section.dart';
 import 'package:note_app_pro/app/themes/style.dart';
 import 'package:note_app_pro/app/utils/color_extension.dart';
-
+import 'create_list_view/create_list_view.dart';
 import 'widgets/list_schedule.dart';
 import 'widgets/search.dart';
 import 'widgets/select_item.dart';

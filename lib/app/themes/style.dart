@@ -17,5 +17,6 @@ final BoxDecoration decorationContainer = BoxDecoration(
 );
 var bodyText = GoogleFonts.nunito(color: Colors.white,fontSize: 36,fontWeight: FontWeight.bold);
 var titleText = GoogleFonts.nunito(color: Colors.blue,fontSize: 14,fontWeight: FontWeight.bold);
+var titleText24BLUE = GoogleFonts.nunito(color: Colors.blue,fontSize: 36,fontWeight: FontWeight.bold);
 var styleText24 = GoogleFonts.nunito(color: Colors.white,fontSize: 24,fontWeight: FontWeight.bold);
 var titleStyle = GoogleFonts.nunito(color: Colors.red,fontSize: 24,fontWeight: FontWeight.bold);

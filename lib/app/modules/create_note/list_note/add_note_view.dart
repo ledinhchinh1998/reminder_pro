@@ -11,20 +11,8 @@ class AddNoteView extends StatelessWidget {
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(controller.now);
     return Scaffold(
-      backgroundColor: Colors.black54,
       appBar: AppBar(
-        leadingWidth: 100,
-        backgroundColor: Colors.black54,
-        leading: Row(
-          children: [
-            IconButton(
-              onPressed: (){
-                Get.back();
-              },
-              icon: Icon(Icons.arrow_back,color: Colors.blue,),
-            )
-          ],
-        )
+        backgroundColor: Colors.transparent,
       ),
       body: Container(
         child: Column(
@@ -37,7 +25,7 @@ class AddNoteView extends StatelessWidget {
                   TextField(
                     decoration: InputDecoration(
                       hintText: "New",
-                        focusedBorder: InputBorder.none
+
                     ),
                   )
                 ],
@@ -51,7 +39,6 @@ class AddNoteView extends StatelessWidget {
                   TextField(
                     decoration: InputDecoration(
                       hintText: "Note",
-                      focusedBorder: InputBorder.none
                     ),
                   )
                 ],

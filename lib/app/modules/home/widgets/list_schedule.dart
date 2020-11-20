@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:note_app_pro/app/data/model/list_model.dart';
-import 'package:note_app_pro/app/modules/create_note/create_note_view.dart';
+import 'package:note_app_pro/app/modules/create_note/list_note_view.dart';
 import 'package:note_app_pro/app/modules/home/home_controller.dart';
 import 'package:note_app_pro/app/themes/style.dart';
 
