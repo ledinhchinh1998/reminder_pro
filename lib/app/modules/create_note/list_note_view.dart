@@ -9,9 +9,7 @@ import 'package:note_app_pro/app/themes/style.dart';
 import 'package:intl/intl.dart';
 import 'widget/input_widget.dart';
 
-class CreateScheduleView extends StatelessWidget {
-  final HomeController controller = Get.find();
-
+class CreateScheduleView extends StatefulWidget {
   final String titleID;
   final Color otherColor;
 
@@ -19,12 +17,19 @@ class CreateScheduleView extends StatelessWidget {
       : super(key: key);
 
   @override
+  _CreateScheduleViewState createState() => _CreateScheduleViewState();
+}
+
+class _CreateScheduleViewState extends State<CreateScheduleView> {
+  final HomeController controller = Get.find();
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         floatingActionButton: ZoomIn(
           child: FloatingActionButton(
-            backgroundColor: otherColor != null ? otherColor : Colors.blue,
+            backgroundColor: widget.otherColor != null ? widget.otherColor : Colors.blue,
             onPressed: () {
               showDialogTest(context);
             },
@@ -37,14 +42,14 @@ class CreateScheduleView extends StatelessWidget {
             onPressed: () => Get.back(),
             icon: Icon(
               Icons.arrow_back_ios_rounded,
-              color: otherColor != null ? otherColor : Colors.blue,
+              color: widget.otherColor != null ? widget.otherColor : Colors.blue,
             ),
           ),
           backgroundColor: Colors.transparent,
           title: Text(
             'List',
             style:
-                TextStyle(color: otherColor != null ? otherColor : Colors.blue),
+                TextStyle(color: widget.otherColor != null ? widget.otherColor : Colors.blue),
           ),
           centerTitle: false,
         ),
@@ -55,9 +60,9 @@ class CreateScheduleView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${titleID ?? "All"}",
+                  "${widget.titleID ?? "All"}",
                   style: GoogleFonts.nunito(
-                      color: otherColor != null ? otherColor : Colors.blue,
+                      color: widget.otherColor != null ? widget.otherColor : Colors.blue,
                       fontSize: 36,
                       fontWeight: FontWeight.bold),
                 ),
@@ -95,8 +100,9 @@ class CreateScheduleView extends StatelessWidget {
                             value: item.isScheduled == 0 ? false : true,
                             materialTapTargetSize: MaterialTapTargetSize.padded,
                             onChanged: (value) {
-                              controller.setCheckBox(titleID, item);
+                              controller.setCheckBox(widget.titleID, item);
                               controller.update();
+                              setState(() {});
                             },
                           ),
                           title: Text('${item.title ?? ''}'),
@@ -142,55 +148,39 @@ class CreateScheduleView extends StatelessWidget {
                 SizedBox(height: 20),
                 InputText(
                   textEditingController: controller.textCTLTitle,
-                  title: 'New',
+                  title: 'New title',
                 ),
                 InputText(
                   textEditingController: controller.textCTLNote,
-                  title: 'Note',
+                  title: 'New note',
                 ),
                 SizedBox(height: 10),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  color: Colors.white12,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Alarm",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text(
-                          DateFormat('yyyy-MM-dd – kk:mm')
-                              .format(controller.now),
-                          style: TextStyle(color: Colors.grey),
+                Card(
+                  elevation: 5,
+                  shadowColor: Colors.white,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    color: Colors.white12,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Alarm",
+                          style: TextStyle(fontSize: 18),
                         ),
-                      )
-                    ],
+                        GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            DateFormat('yyyy-MM-dd – kk:mm')
+                                .format(controller.now),
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: 10),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  color: Colors.white12,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "List",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text(
-                          ">",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
                 SizedBox(height: 10),
                 Align(
                   alignment: Alignment.bottomRight,
@@ -198,14 +188,15 @@ class CreateScheduleView extends StatelessWidget {
                     backgroundColor: Colors.white,
                     onPressed: () {
                       var item = ScheduleModel(
-                          list: titleID,
+                          list: widget.titleID,
                           isScheduled: 0,
                           title: controller.textCTLTitle.text,
                           momentOfReminding: DateFormat('yyyy-MM-dd – kk:mm')
                               .format(controller.now),
                           note: controller.textCTLNote.text,
-                          dateTime: "test");
-                      controller.addNote(titleID: titleID, scheduleModel: item);
+                          dateTime: DateFormat('yyyy-MM-dd – kk:mm')
+                              .format(controller.now));
+                      controller.addNote(titleID: widget.titleID, scheduleModel: item);
                       Get.back();
                     },
                     child: Icon(
@@ -229,7 +220,7 @@ class CreateScheduleView extends StatelessWidget {
   }
 }
 
-class ShowBottomSheetNote extends StatelessWidget {
+class ShowBottomSheetNote extends StatefulWidget {
 
   final ScheduleModel item;
   final Function onDelete;
@@ -238,25 +229,105 @@ class ShowBottomSheetNote extends StatelessWidget {
   ShowBottomSheetNote({Key key, this.item, this.onDelete, this.onUpdate}) : super(key: key);
 
   @override
+  _ShowBottomSheetNoteState createState() => _ShowBottomSheetNoteState();
+}
+
+class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
+  final TextEditingController textTitleCTL = TextEditingController();
+  final TextEditingController textNoteCTL = TextEditingController();
+  var isShow = false;
+  HomeController controller  = Get.find();
+
+  @override
   Widget build(BuildContext context) {
+    textTitleCTL.text = widget.item.title;
+    textNoteCTL.text = widget.item.note;
     return Container(
       child: Column(
         children: [
           AppBar(
             backgroundColor: Colors.transparent,
             leading: IconButton(
-              onPressed: onDelete,
+              onPressed: widget.onDelete,
               icon: Icon(Icons.delete,color: Colors.red,),
             ),
-            title: Text('${item.title}',style: styleText24,),
+            title: Text('${widget.item.title}',style: styleText24,),
             centerTitle: true,
             actions: [
               IconButton(
-                onPressed: onUpdate,
+                onPressed: widget.onUpdate,
                 icon: Icon(Icons.done_outline_rounded,color: Colors.green,),
               )
             ],
-          )
+          ),
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                InputText(title: 'Title',textEditingController: textTitleCTL,),
+                InputText(title: 'Note',textEditingController: textNoteCTL,),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Notification",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                    Switch.adaptive(
+                      value: isShow,
+                      onChanged: (value) async {
+                        isShow = value;
+                        setState(() {
+                        });
+                      },
+                    )
+                  ],
+                ),
+                SizedBox(height: 20,),
+                InkWell(
+                  onTap: (){
+                    Get.dialog(Dialog(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        height: 400,
+                        child: Column(
+                          children: [
+                            Text('Choose List',style: titleText24BLUE,),
+                            Expanded(
+                              child: ListView.separated(
+                                itemCount: controller.calendars.value.length,
+                                separatorBuilder: (BuildContext context, int index) {
+                                  return Divider();
+                                },
+                                itemBuilder: (BuildContext context, int index) {
+                                  var item = controller.calendars.value[index];
+                                  return ListTile(
+                                    leading: Icon(Icons.folder_open_outlined),
+                                    title: Text('${item.title}'),
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Move to List",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      Icon(Icons.navigate_next,color: Colors.white,)
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
