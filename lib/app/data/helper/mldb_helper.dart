@@ -7,6 +7,7 @@ class MLDBHelper {
   static Database _db;
   static final int _version = 1;
   static final String _tableName = '_listDB';
+  static final String _tableNote = '_noteDB';
 
   static Future<void> initDb() async {
     if (_db != null) {
@@ -19,9 +20,7 @@ class MLDBHelper {
         path1,
         version: _version,
         onCreate: (db, version) {
-          return db.execute(
-            "CREATE TABLE $_tableName(id INTEGER PRIMARY KEY,color STRING,title STRING)",
-          );
+          return _createDb(db);
         },
       );
     } catch (e) {
@@ -29,8 +28,9 @@ class MLDBHelper {
     }
   }
 
-  static Future<void> createDb(String nameTable) async {
-    _db.execute('CREATE TABLE $nameTable(id INTEGER PRIMARY KEY,isScheduled INTEGER,title STRING,momentOfReminding STRING,focusNode STRING,dateTime STRING, note TEXT)');
+  static void _createDb(Database db) {
+    db.execute("CREATE TABLE $_tableName(id INTEGER PRIMARY KEY,color STRING,title STRING)");
+    db.execute('CREATE TABLE $_tableNote(id INTEGER PRIMARY KEY,list STRING,isScheduled INTEGER,title STRING,momentOfReminding STRING,focusNode STRING,dateTime STRING, note TEXT)');
   }
 
   static Future<int> insertList(ListModel listModel) async {
@@ -51,20 +51,21 @@ class MLDBHelper {
     return _db.query(_tableName);
   }
 
-  static Future<int> insert(String tableName,ScheduleModel scheduleModel) async {
-    return await _db.insert(tableName, scheduleModel.toJson());
+  // database note itemmmm
+  static Future<int> insert(ScheduleModel scheduleModel) async {
+    return await _db.insert(_tableNote, scheduleModel.toJson());
   }
 
-  static Future<int> delete(String tableName,ScheduleModel scheduleModel) async {
-    return await _db.delete(tableName, where: 'id = ?', whereArgs: [scheduleModel.id]);
+  static Future<int> delete(ScheduleModel scheduleModel) async {
+    return await _db.delete(_tableNote, where: 'id = ?', whereArgs: [scheduleModel.id]);
   }
 
-  static Future<int> update(String tableName,ScheduleModel scheduleModel) async {
-    return await _db.update(tableName,scheduleModel.toJson(),where: 'id = ?',whereArgs: [scheduleModel.id]);
+  static Future<int> update(ScheduleModel scheduleModel) async {
+    return await _db.update(_tableNote,scheduleModel.toJson(),where: 'id = ?',whereArgs: [scheduleModel.id]);
   }
 
 
-  static Future<List<Map<String, dynamic>>> query(String tableName) async {
-    return _db.query(tableName);
+  static Future<List<Map<String, dynamic>>> query() async {
+    return _db.query(_tableNote);
   }
 }

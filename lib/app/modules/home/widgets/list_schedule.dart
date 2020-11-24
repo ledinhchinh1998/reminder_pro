@@ -33,7 +33,7 @@ class SectionMyListCalendar extends StatelessWidget {
           Color otherColor = new Color(value);
           return ItemCalendar(
               onSelected: (){
-
+                controller.createNote(name: item.title,otherColor: otherColor);
               },
               updateNode: (){},
               deleteNote:(){

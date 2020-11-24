@@ -1,24 +1,22 @@
 
-import 'package:flutter/cupertino.dart';
-
 class ScheduleModel {
   int id;
+  String list;
   int isScheduled;
   String title;
   String momentOfReminding;
-  FocusNode focusNode;
   String dateTime;
   String note;
 
-  ScheduleModel({this.id,this.isScheduled, this.title, this.momentOfReminding, this.focusNode, this.note, this.dateTime});
+  ScheduleModel({this.id,this.list,this.isScheduled, this.title, this.momentOfReminding, this.note, this.dateTime});
 
 
    ScheduleModel.fromJson(Map<String, dynamic> map) {
      id = map['id'];
+     list = map['list'];
      isScheduled = map['isScheduled'];
      title = map['title'];
      momentOfReminding = map['momentOfReminding'];
-     focusNode =  map['focusNode'] ;
      dateTime = map['dateTime'] ;
      note = map['note'];
   }
@@ -27,10 +25,10 @@ class ScheduleModel {
     // ignore: unnecessary_cast
     return {
       'id': this.id,
+      'list': this.list,
       'isScheduled': this.isScheduled,
       'title': this.title,
       'momentOfReminding': this.momentOfReminding,
-      'focusNode': this.focusNode,
       'dateTime': this.dateTime,
       'note': this.note,
     } as Map<String, dynamic>;

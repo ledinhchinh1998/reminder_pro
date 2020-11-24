@@ -33,7 +33,7 @@ class _CreateListViewState extends State<CreateListView> {
       item.title = textEditingController.text;
       item.color = colorBg.toString();
       controller.calendars.value.add(item);
-      controller.addNote(item);
+      controller.addList(item);
       controller.update();
       Get.back();
     } else {

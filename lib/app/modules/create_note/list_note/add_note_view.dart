@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:note_app_pro/app/modules/create_note/widget/input_widget.dart';
 import 'package:note_app_pro/app/modules/home/home_controller.dart';
 import 'package:note_app_pro/app/themes/style.dart';
 
@@ -74,28 +75,6 @@ class AddNoteView extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class InputText extends StatelessWidget {
-
-  final String title;
-
-  const InputText({Key key, this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      shadowColor: Colors.white,
-      child: TextField(
-        decoration: InputDecoration(
-          labelText: title,
-          hintText: title,
-          border: OutlineInputBorder()
         ),
       ),
     );

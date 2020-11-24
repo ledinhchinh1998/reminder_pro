@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:get/get.dart';
-import 'package:note_app_pro/app/modules/create_note/list_note_view.dart';
 import 'package:note_app_pro/app/modules/home/home_controller.dart';
 import 'package:note_app_pro/app/modules/home/widgets/section.dart';
 import 'package:note_app_pro/app/themes/style.dart';
@@ -38,19 +37,38 @@ class HomeView extends StatelessWidget {
                 }),
                 SizedBox(height: 20,),
                 Section(onToday: (){
-                  Get.to(CreateScheduleView());
+                  controller.createNote(name :'Today');
                 },onSchedule: (){}  ,),
                 SizedBox(height: 20,),
-                SectionCalender(
-                    imgPath: "assets/zip.png",
-                    title: "  All",
-                    count: 0,
-                    color: HexColor.fromHex("#9E9E9E")),
+                Obx((){
+                  return SectionCalender(
+                      onclick: () => controller.createNote(),
+                      imgPath: "assets/zip.png",
+                      title: "  All",
+                      count: controller.items.length ?? 0,
+                      color: HexColor.fromHex("#9E9E9E"));
+                }),
                 SizedBox(height: 20,),
                 Text('My List',style: bodyText,),
-                Obx(() => SectionMyListCalendar(
+                Obx(() {
+                  if (controller.calendars.value.isEmpty) {
+                    return Container(
+                      margin: const EdgeInsets.only(top: 50),
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/box.png',color: Colors.white,width: 200,height: 200,),
+                          Text('List is Empty')
+                        ],
+                      ),
+                    );
+                  }  else {
+                    return SectionMyListCalendar(
                       calendars: controller.calendars.value,
-                    )),
+                    );
+                  }
+                }),
               ],
             ),
           ),
