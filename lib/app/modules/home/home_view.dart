@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:get/get.dart';
 import 'package:note_app_pro/app/modules/create_note/list_note_view.dart';
 import 'package:note_app_pro/app/modules/home/home_controller.dart';
@@ -55,11 +56,14 @@ class HomeView extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async{
-          var text = await Get.to(CreateListView());
-        },
-        child: Icon(Icons.add_circle),
+      floatingActionButton: ZoomIn(
+        preferences: AnimationPreferences(duration: Duration(seconds: 5)),
+        child: FloatingActionButton(
+          onPressed: () async{
+            var text = await Get.to(CreateListView());
+          },
+          child: Icon(Icons.add_circle),
+        ),
       ),
     );
   }

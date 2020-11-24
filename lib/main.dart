@@ -17,7 +17,7 @@ Future<void> main() async {
       primaryColor: Colors.blue,
       accentColor: Colors.blue,
     ),
-    defaultTransition: Transition.fade,
+    defaultTransition: Transition.leftToRight,
     //getPages: MyRoutes.routes,
     home: SplashView(),
   ));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:note_app_pro/app/modules/home/home_controller.dart';
+import 'package:note_app_pro/app/themes/style.dart';
 
 class AddNoteView extends StatelessWidget {
 
@@ -11,39 +12,15 @@ class AddNoteView extends StatelessWidget {
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(controller.now);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
       body: Container(
+        padding: const EdgeInsets.all(20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              color: Colors.white12,
-              child: Column(
-                children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "New",
-
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              color: Colors.white12,
-              child: Column(
-                children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "Note",
-                    ),
-                  )
-                ],
-              ),
-            ),
+            Text("ADD NOTE",style: styleText24,),
+            SizedBox(height: 50),
+            InputText(title: 'New',),
+            InputText(title: 'Note',),
             SizedBox(height: 10),
             Container(
               padding: EdgeInsets.all(10),
@@ -58,7 +35,7 @@ class AddNoteView extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-        
+
                     },
                     child: Text(
                       formattedDate,
@@ -102,3 +79,26 @@ class AddNoteView extends StatelessWidget {
     );
   }
 }
+
+class InputText extends StatelessWidget {
+
+  final String title;
+
+  const InputText({Key key, this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      shadowColor: Colors.white,
+      child: TextField(
+        decoration: InputDecoration(
+          labelText: title,
+          hintText: title,
+          border: OutlineInputBorder()
+        ),
+      ),
+    );
+  }
+}
+
