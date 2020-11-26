@@ -46,7 +46,8 @@ class _SplashScreenState extends State<SplashView> with TickerProviderStateMixin
                             fontSize: 44,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 2,
-                            foreground: Paint()..shader = _.linearGradient,
+//                            foreground: Paint()..shader = _.linearGradient,
+                          color: Colors.white
                           )
                       );
                     },
