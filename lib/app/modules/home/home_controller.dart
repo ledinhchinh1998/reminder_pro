@@ -115,11 +115,22 @@ class HomeController extends GetxController {
   }
 
   Future<void> deleteNote(ListModel listModel) async {
+    items.value.forEach((note) async {
+      if (listModel.title == note.list) {
+        await MLDBHelper.delete(note);
+      }
+    });
     await MLDBHelper.deleteItemList(listModel);
     getMyList();
+    getNotes();
   }
 
   // khi click vao today,get danh sach note
+
+  Future<void> getNotes() async {
+    List<Map<String, dynamic>> noteList = await MLDBHelper.query();
+    items.value = noteList.map((data) => ScheduleModel.fromJson(data)).toList();
+  }
 
   Future<void> getListNote({String titleID}) async {
     items.value.clear();
