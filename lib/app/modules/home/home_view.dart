@@ -117,7 +117,10 @@ class _HomeViewState extends State<HomeView> {
                               controller.createNote(name: 'Today');
                             },
                             countToday: controller.getCount(),
-                            onSchedule: () {},
+                            onSchedule: () {
+                              controller.schedule();
+                            },
+                            countSchedule: controller.getCountSchedule(),
                           );
                         }),
                         SizedBox(

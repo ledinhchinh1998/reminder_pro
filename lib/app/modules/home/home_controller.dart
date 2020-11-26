@@ -92,6 +92,16 @@ class HomeController extends GetxController {
     update();
     return itemsToTitle.length;
   }
+  int getCountSchedule(){
+    var itemsToTitle = List<ScheduleModel>().obs;
+    items.value.forEach((note) {
+      if (note.isScheduled == 0) {
+        itemsToTitle.value.add(note);
+      }
+    });
+    update();
+    return itemsToTitle.length;
+  }
 
   // get danh sach note hien thi ben ngoai minh hinh Home view
   Future<void> getMyList() async {
@@ -165,6 +175,19 @@ class HomeController extends GetxController {
       otherColor: otherColor,
     ));
   }
+
+  void schedule() {
+    itemsToTitle.value.clear();
+    items.value.forEach((note) {
+      if (0 == note.isScheduled) {
+        itemsToTitle.value.add(note);
+      }
+    });
+    Get.to(CreateScheduleView(
+      otherColor: Colors.yellow,
+    ));
+  }
+
   // push notification
 
   Future<void> zonedScheduleNotification({int year, int month,int day,int hour,int minute,String title,String body,}) async {
