@@ -27,11 +27,15 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
         floatingActionButton: ZoomIn(
           child: FloatingActionButton(
-            backgroundColor: widget.otherColor != null ? widget.otherColor : Colors.blue,
+            backgroundColor: widget.otherColor != null
+                ? widget.otherColor
+                : Colors.blue,
             onPressed: () {
               showDialogTest(context);
             },
@@ -44,11 +48,14 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
             onPressed: () => Get.back(),
             icon: Icon(
               Icons.arrow_back_ios_rounded,
-              color: widget.otherColor != null ? widget.otherColor : Colors.blue,
+              color: widget.otherColor != null ? widget.otherColor : Colors
+                  .blue,
             ),
           ),
           backgroundColor: Colors.transparent,
-          title: Text('List', style: TextStyle(color: widget.otherColor != null ? widget.otherColor : Colors.blue),
+          title: Text('List', style: TextStyle(
+              color: widget.otherColor != null ? widget.otherColor : Colors
+                  .blue),
           ),
           centerTitle: false,
         ),
@@ -77,14 +84,18 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
                         children: [
                           Image.asset(
                             "assets/box.png",
-                            color: widget.otherColor !=null ? widget.otherColor : Colors.white,
+                            color: widget.otherColor != null
+                                ? widget.otherColor
+                                : Colors.white,
                             height: 150,
                             width: 150,
                           ),
                           SizedBox(
                             height: 20,
                           ),
-                          Text("List của bạn đang bị rỗng",style: TextStyle(color: widget.otherColor !=null ? widget.otherColor : Colors.white),)
+                          Text("List của bạn đang bị rỗng", style: TextStyle(
+                              color: widget.otherColor != null ? widget
+                                  .otherColor : Colors.white),)
                         ],
                       ),
                     );
@@ -95,9 +106,13 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
                         var item = controller.itemsToTitle.value[index];
                         return ListTile(
                           leading: CircularCheckBox(
-                            inactiveColor: widget.otherColor !=null ? widget.otherColor : Colors.white,
-                            checkColor: widget.otherColor !=null ? Colors.white : Colors.blue,
-                            activeColor: widget.otherColor !=null ? widget.otherColor : Colors.white,
+                            inactiveColor: widget.otherColor != null ? widget
+                                .otherColor : Colors.white,
+                            checkColor: widget.otherColor != null
+                                ? Colors.white
+                                : Colors.blue,
+                            activeColor: widget.otherColor != null ? widget
+                                .otherColor : Colors.white,
                             value: item.isScheduled == 0 ? false : true,
                             materialTapTargetSize: MaterialTapTargetSize.padded,
                             onChanged: (value) {
@@ -106,13 +121,19 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
                               setState(() {});
                             },
                           ),
-                          title: Text('${item.title ?? ''}',style: TextStyle(color: widget.otherColor != null ? widget.otherColor : Colors.white,fontWeight: FontWeight.bold),),
+                          title: Text('${item.title ?? ''}', style: TextStyle(
+                              color: widget.otherColor != null ? widget
+                                  .otherColor : Colors.white,
+                              fontWeight: FontWeight.bold),),
                           subtitle: Text('${item.momentOfReminding ?? ''}'),
                           trailing: IconButton(
-                            onPressed: () {
-                              Get.bottomSheet(ShowBottomSheetNote(
-                                item: item,
-                              ));
+                            onPressed: () async {
+                              var reso = await Get.bottomSheet(
+                                  ShowBottomSheetNote(
+                                    item: item,
+                                    titleID: widget.titleID,
+                                  ));
+                              setState(() {});
                             },
                             icon: Icon(Icons.info),
                           ),
@@ -135,7 +156,7 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
       barrierColor: Colors.black.withOpacity(0.5),
       transitionDuration: Duration(milliseconds: 700),
       context: context,
-      pageBuilder: (_,__,___) {
+      pageBuilder: (_, __, ___) {
         return Dialog(
           child: Container(
             height: 400,
@@ -219,16 +240,20 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
           child: child,
         );
       },
-    );
+    ).then((value) {
+      setState(() {});
+    });
   }
 }
 
 class ShowBottomSheetNote extends StatefulWidget {
   final ScheduleModel item;
+  final String titleID;
   final Function onDelete;
   final Function onUpdate;
 
-  ShowBottomSheetNote({Key key, this.item, this.onDelete, this.onUpdate})
+  ShowBottomSheetNote(
+      {Key key, this.item, this.onDelete, this.onUpdate, this.titleID})
       : super(key: key);
 
   @override
@@ -259,6 +284,7 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
       builder: (context) => dialogBody,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     textTitleCTL.text = widget.item.title;
@@ -271,7 +297,11 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
             AppBar(
               backgroundColor: Colors.transparent,
               leading: IconButton(
-                onPressed: widget.onDelete,
+                onPressed: () {
+                  controller.deleteNotes(
+                      titleID: widget.titleID, noteModel: widget.item);
+                  Get.back();
+                },
                 icon: Icon(
                   Icons.delete,
                   color: Colors.red,
@@ -281,7 +311,21 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
               centerTitle: true,
               actions: [
                 IconButton(
-                  onPressed: widget.onUpdate,
+                  onPressed: () {
+                    var itemNote = ScheduleModel(
+                        id: widget.item.id,
+                        list: nameFolder.isEmpty ? widget.titleID : nameFolder,
+                        isScheduled: widget.item.isScheduled,
+                        title: textTitleCTL.text,
+                        note: textNoteCTL.text,
+                        momentOfReminding: DateFormat('yyyy-MM-dd – kk:mm')
+                            .format(dateTime),
+                        dateTime: DateFormat('yyyy-MM-dd – kk:mm')
+                            .format(dateTime),
+                    );
+                    controller.updateNotes(titleID: widget.titleID,noteModel: itemNote);
+                    Get.back();
+                  },
                   icon: Icon(
                     Icons.done_outline_rounded,
                     color: Colors.green,
@@ -293,7 +337,8 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
               padding: EdgeInsets.all(20),
               child: Column(
                 children: [
-                  InputText(title: 'Title', textEditingController: textTitleCTL,),
+                  InputText(
+                    title: 'Title', textEditingController: textTitleCTL,),
                   InputText(title: 'Note', textEditingController: textNoteCTL,),
                   SizedBox(
                     height: 20,
@@ -301,11 +346,25 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Notification", style: TextStyle(color: Colors.white, fontSize: 18),),
+                      Text("Notification",
+                        style: TextStyle(color: Colors.white, fontSize: 18),),
                       Switch.adaptive(
                         value: isShow,
                         onChanged: (value) async {
                           isShow = value;
+                          print('check $isShow');
+                          if (isShow) {
+                            await controller.zonedScheduleNotification(
+                                year: dateTime.year,
+                                month: dateTime.month,
+                                day: dateTime.day,
+                                hour: dateTime.hour,
+                                minute: dateTime.minute,
+                                title: 'Công việc của bạn ',
+                                body: widget.item.title);
+                          }else{
+                            await controller.cancelAllNotifications();
+                          }
                           setState(() {});
                         },
                       )
@@ -317,25 +376,27 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Date Time", style: TextStyle(color: Colors.white, fontSize: 18),),
+                      Text("Date Time",
+                        style: TextStyle(color: Colors.white, fontSize: 18),),
                       InkWell(
-                        onTap: (){
-                          _showDemoPicker(
-                            context: context,
-                            child: BottomPicker(
-                              child: CupertinoDatePicker(
-                                backgroundColor:Colors.white30,
-                                mode: CupertinoDatePickerMode.dateAndTime,
-                                initialDateTime: DateTime.now(),
-                                onDateTimeChanged: (newDateTime) {
-                                  dateTime = newDateTime;
-                                  setState(() {});
-                                },
+                          onTap: () {
+                            _showDemoPicker(
+                              context: context,
+                              child: BottomPicker(
+                                child: CupertinoDatePicker(
+                                  backgroundColor: Colors.white30,
+                                  mode: CupertinoDatePickerMode.dateAndTime,
+                                  initialDateTime: DateTime.now(),
+                                  onDateTimeChanged: (newDateTime) {
+                                    dateTime = newDateTime;
+                                    setState(() {});
+                                  },
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                          child: Text("${DateFormat('yyyy-MM-dd – kk:mm').format(dateTime)}"))
+                            );
+                          },
+                          child: Text("${DateFormat('yyyy-MM-dd – kk:mm')
+                              .format(dateTime)}"))
                     ],
                   ),
                   SizedBox(
@@ -354,13 +415,16 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                               Expanded(
                                 child: ListView.separated(
                                   itemCount: controller.calendars.value.length,
-                                  separatorBuilder: (BuildContext context, int index) {
+                                  separatorBuilder: (BuildContext context,
+                                      int index) {
                                     return Divider();
                                   },
-                                  itemBuilder: (BuildContext context, int index) {
-                                    var item = controller.calendars.value[index];
+                                  itemBuilder: (BuildContext context,
+                                      int index) {
+                                    var item = controller.calendars
+                                        .value[index];
                                     return ListTile(
-                                      onTap: (){
+                                      onTap: () {
                                         nameFolder = item.title;
                                         setState(() {});
                                         Get.back();
@@ -379,7 +443,8 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Move to List", style: TextStyle(color: Colors.white, fontSize: 18),),
+                        Text("Move to List", style: TextStyle(color: Colors
+                            .white, fontSize: 18),),
                         Text("$nameFolder >  ")
                       ],
                     ),
