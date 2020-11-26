@@ -5,6 +5,7 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:note_app_pro/app/data/model/schedule_model.dart';
+import 'package:note_app_pro/app/modules/home/create_list_view/create_list_view.dart';
 import 'package:note_app_pro/app/modules/home/home_controller.dart';
 import 'package:note_app_pro/app/themes/style.dart';
 import 'package:intl/intl.dart';
@@ -406,38 +407,54 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                     onTap: () {
                       //Show dialog
                       Get.dialog(Dialog(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          height: 400,
-                          child: Column(
-                            children: [
-                              Text('Choose List', style: titleText24BLUE,),
-                              Expanded(
-                                child: ListView.separated(
-                                  itemCount: controller.calendars.value.length,
-                                  separatorBuilder: (BuildContext context,
-                                      int index) {
-                                    return Divider();
-                                  },
-                                  itemBuilder: (BuildContext context,
-                                      int index) {
-                                    var item = controller.calendars
-                                        .value[index];
-                                    return ListTile(
-                                      onTap: () {
-                                        nameFolder = item.title;
-                                        setState(() {});
-                                        Get.back();
-                                      },
-                                      leading: Icon(Icons.folder_open_outlined),
-                                      title: Text('${item.title}'),
-                                    );
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                        child: Obx((){
+                          return Container(
+                            padding: EdgeInsets.all(10),
+                            height: 400,
+                            child: Column(
+                              children: [
+                                Text('Choose List', style: titleText24BLUE,),
+                                Expanded(
+                                  child: controller.calendars
+                                      .value.length > 0 ? ListView.separated(
+                                    itemCount: controller.calendars.value.length,
+                                    separatorBuilder: (BuildContext context,
+                                        int index) {
+                                      return Divider();
+                                    },
+                                    itemBuilder: (BuildContext context,
+                                        int index) {
+                                      var item = controller.calendars
+                                          .value[index];
+                                      return ListTile(
+                                        onTap: () {
+                                          nameFolder = item.title;
+                                          setState(() {});
+                                          Get.back();
+                                        },
+                                        leading: Icon(Icons.folder_open_outlined),
+                                        title: Text('${item.title}'),
+                                      );
+                                    },
+                                  ) : Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset("assets/box.png",width: 100,height: 100,color: Colors.white,),
+                                      RaisedButton(
+                                        onPressed: () async{
+                                          var res = await Get.to(CreateListView());
+                                          print(res);
+                                          setState(() {});
+                                        },
+                                        child: Text('Create List'),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        }),
                       ));
                     },
                     child: Row(
@@ -445,7 +462,7 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                       children: [
                         Text("Move to List", style: TextStyle(color: Colors
                             .white, fontSize: 18),),
-                        Text("$nameFolder >  ")
+                        Text("${nameFolder.isEmpty ? widget.item.list : nameFolder} >  ")
                       ],
                     ),
                   ),
