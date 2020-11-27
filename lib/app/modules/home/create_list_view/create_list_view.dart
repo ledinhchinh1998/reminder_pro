@@ -60,16 +60,18 @@ class _CreateListViewState extends State<CreateListView> {
         ),
         centerTitle: true,
         actions: [
-          FlatButton(
-            onPressed: doneAction,
-            child: Text(
-              "Done",
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-          )
+          Obx((){
+            return FlatButton(
+              onPressed: controller.titleList.value.isEmpty ? null : doneAction,
+              child: Text(
+                "Done",
+                style: TextStyle(
+                    color:controller.titleList.value.isEmpty ? Colors.grey : Colors.blue,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            );
+          })
         ],
       ),
       body: Container(
@@ -95,14 +97,21 @@ class _CreateListViewState extends State<CreateListView> {
                 decoration: BoxDecoration(
                     color: Colors.grey[800],
                     borderRadius: BorderRadius.circular(10)),
-                child: TextField(
+                child: TextFormField(
+                    onChanged: (value){
+                      controller.onTextChangeTitleList(value);
+                    },
+                    maxLength: 30,
                     textAlign: TextAlign.center,
                     controller: textEditingController,
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
-                    decoration: InputDecoration(border: InputBorder.none)),
+                    decoration: InputDecoration(
+                        hintText: 'Enter title',
+                        border: InputBorder.none),
+                ),
               ),
               SizedBox(height: 20),
               Wrap(

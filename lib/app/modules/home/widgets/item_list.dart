@@ -29,25 +29,31 @@ class ItemCalendar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          color: colorIcon,
-                          borderRadius: BorderRadius.circular(25)),
-                      child: Icon(
-                        Icons.list,
-                        color: Colors.white,
-                        size: 25,
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            color: colorIcon,
+                            borderRadius: BorderRadius.circular(25)),
+                        child: Icon(
+                          Icons.list,
+                          color: Colors.white,
+                          size: 25,
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      title,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    )
-                  ],
+                      SizedBox(width: 10),
+                      Flexible(
+                        child: Text(
+                          title,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          maxLines: 1,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Row(
                   children: [

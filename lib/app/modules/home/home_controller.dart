@@ -20,11 +20,12 @@ class HomeController extends GetxController {
 
   var isClear = true.obs;
   var calendars = List<ListModel>().obs;
-  DateTime now = DateTime.now();
+  var now = DateTime.now().obs;
   var items = List<ScheduleModel>().obs;
   var itemsFilter = List<ScheduleModel>().obs;
   var itemsToTitle = List<ScheduleModel>().obs;
   var key= "".obs;
+  var titleList = "".obs;
 
   // khong search nua
   void cancelSearch() {
@@ -47,6 +48,10 @@ class HomeController extends GetxController {
         }
       });
     }
+  }
+
+  void onTextChangeTitleList(value){
+    titleList.value = value;
   }
 
   // clearText search

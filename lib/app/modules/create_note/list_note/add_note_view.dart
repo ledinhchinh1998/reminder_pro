@@ -11,7 +11,7 @@ class AddNoteView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(controller.now);
+    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(controller.now.value);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(20),

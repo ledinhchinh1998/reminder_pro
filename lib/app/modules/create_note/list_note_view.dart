@@ -149,6 +149,21 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
           ),
         ));
   }
+  void _showDemoPicker({
+    @required BuildContext context,
+    @required Widget child,
+  }) {
+    final themeData = CupertinoTheme.of(context);
+    final dialogBody = CupertinoTheme(
+      data: themeData,
+      child: child,
+    );
+
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (context) => dialogBody,
+    );
+  }
 
   void showDialogTest(context) {
     showGeneralDialog(
@@ -162,76 +177,92 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
           child: Container(
             height: 400,
             padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "ADD NOTE",
-                  style: styleText24,
-                ),
-                SizedBox(height: 20),
-                InputText(
-                  textEditingController: controller.textCTLTitle,
-                  title: 'New title',
-                ),
-                InputText(
-                  textEditingController: controller.textCTLNote,
-                  title: 'New note',
-                ),
-                SizedBox(height: 10),
-                Card(
-                  elevation: 5,
-                  shadowColor: Colors.white,
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    color: Colors.white12,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Alarm",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            DateFormat('yyyy-MM-dd – kk:mm')
-                                .format(controller.now),
-                            style: TextStyle(color: Colors.grey),
+            child: Obx((){
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "ADD NOTE",
+                    style: styleText24,
+                  ),
+                  SizedBox(height: 20),
+                  InputText(
+                    textEditingController: controller.textCTLTitle,
+                    title: 'New title',
+                  ),
+                  InputText(
+                    textEditingController: controller.textCTLNote,
+                    title: 'New note',
+                  ),
+                  SizedBox(height: 10),
+                  Card(
+                    elevation: 5,
+                    shadowColor: Colors.white,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      color: Colors.white12,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Alarm",
+                            style: TextStyle(fontSize: 18),
                           ),
-                        )
-                      ],
+                          GestureDetector(
+                            onTap: () {
+                              _showDemoPicker(
+                                context: context,
+                                child: BottomPicker(
+                                  child: CupertinoDatePicker(
+                                    backgroundColor: Colors.white30,
+                                    mode: CupertinoDatePickerMode.dateAndTime,
+                                    initialDateTime: DateTime.now(),
+                                    onDateTimeChanged: (newDateTime) {
+                                      controller.now.value = newDateTime;
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              DateFormat('yyyy-MM-dd kk:mm').format(controller.now.value),
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 10),
-                SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: FloatingActionButton(
-                    backgroundColor: Colors.white,
-                    onPressed: () {
-                      var item = ScheduleModel(
-                          list: widget.titleID,
-                          isScheduled: 0,
-                          title: controller.textCTLTitle.text,
-                          momentOfReminding: DateFormat('yyyy-MM-dd – kk:mm')
-                              .format(controller.now),
-                          note: controller.textCTLNote.text,
-                          dateTime: DateFormat('yyyy-MM-dd – kk:mm')
-                              .format(controller.now));
-                      controller.addNote(
-                          titleID: widget.titleID, scheduleModel: item);
-                      Get.back();
-                    },
-                    child: Icon(
-                      Icons.save_alt,
-                      color: Colors.blue,
+                  SizedBox(height: 10),
+                  SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.white,
+                      onPressed: () {
+                        var item = ScheduleModel(
+                            list: widget.titleID,
+                            isScheduled: 0,
+                            title: controller.textCTLTitle.text,
+                            momentOfReminding: DateFormat('yyyy-MM-dd kk:mm')
+                                .format(controller.now.value),
+                            note: controller.textCTLNote.text,
+                            dateTime: DateFormat('yyyy-MM-dd kk:mm')
+                                .format(controller.now.value));
+                        controller.addNote(
+                            titleID: widget.titleID, scheduleModel: item);
+                        Get.back();
+                      },
+                      child: Icon(
+                        Icons.save_alt,
+                        color: Colors.blue,
+                      ),
                     ),
-                  ),
-                )
-              ],
-            ),
+                  )
+                ],
+              );
+            }),
           ),
         );
       },
@@ -243,6 +274,7 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
       },
     ).then((value) {
       setState(() {});
+      controller.now.value = DateTime.now();
     });
   }
 }
@@ -319,9 +351,9 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                         isScheduled: widget.item.isScheduled,
                         title: textTitleCTL.text,
                         note: textNoteCTL.text,
-                        momentOfReminding: DateFormat('yyyy-MM-dd – kk:mm')
+                        momentOfReminding: DateFormat('yyyy-MM-dd kk:mm')
                             .format(dateTime),
-                        dateTime: DateFormat('yyyy-MM-dd – kk:mm')
+                        dateTime: DateFormat('yyyy-MM-dd kk:mm')
                             .format(dateTime),
                     );
                     controller.updateNotes(titleID: widget.titleID,noteModel: itemNote);
@@ -350,11 +382,12 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                       Text("Notification",
                         style: TextStyle(color: Colors.white, fontSize: 18),),
                       Switch.adaptive(
-                        value: isShow,
+                        value: widget.item.isScheduled == 0 ? false : true,
                         onChanged: (value) async {
                           isShow = value;
-                          print('check $isShow');
-                          if (isShow) {
+                          print('check $value');
+                          if (value) {
+                            widget.item.isScheduled = 1;
                             await controller.zonedScheduleNotification(
                                 year: dateTime.year,
                                 month: dateTime.month,
@@ -364,6 +397,7 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                                 title: 'Công việc của bạn ',
                                 body: widget.item.title);
                           }else{
+                            widget.item.isScheduled = 0;
                             await controller.cancelAllNotifications();
                           }
                           setState(() {});
@@ -396,8 +430,7 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                               ),
                             );
                           },
-                          child: Text("${DateFormat('yyyy-MM-dd – kk:mm')
-                              .format(dateTime)}"))
+                          child: Text("${widget.item.dateTime}"))
                     ],
                   ),
                   SizedBox(
