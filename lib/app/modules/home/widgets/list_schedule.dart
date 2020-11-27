@@ -35,7 +35,9 @@ class SectionMyListCalendar extends StatelessWidget {
               onSelected: (){
                 controller.createNote(name: item.title,otherColor: otherColor);
               },
-              updateNode: (){},
+              updateNode: (){
+                Get.snackbar("Hello Guy!", "Tính năng đang phát triển",snackPosition: SnackPosition.BOTTOM,colorText: Colors.blue);
+              },
               deleteNote:(){
                 Get.defaultDialog(
                     title: 'Delete',

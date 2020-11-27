@@ -76,13 +76,11 @@ class ItemCalendar extends StatelessWidget {
       ),
       secondaryActions: <Widget>[
         IconSlideAction(
-          caption: 'Delete',
           color: Colors.red,
           icon: Icons.delete,
           onTap: deleteNote,
         ),
         IconSlideAction(
-          caption: 'Update',
           color: Colors.blue,
           icon: Icons.system_update_alt_sharp,
           onTap: updateNode,
