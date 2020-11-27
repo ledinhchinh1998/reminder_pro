@@ -115,9 +115,11 @@ class _HomeViewState extends State<HomeView> {
                           return Section(
                             onToday: () {
                               controller.createNote(name: 'Today');
+                              FocusScope.of(context).requestFocus(FocusNode());
                             },
                             countToday: controller.getCount(),
                             onSchedule: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
                               controller.schedule();
                             },
                             countSchedule: controller.getCountSchedule(),
@@ -128,7 +130,10 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         Obx(() {
                           return SectionCalender(
-                              onclick: () => controller.createNote(),
+                              onclick: () {
+                                FocusScope.of(context).requestFocus(FocusNode());
+                                controller.createNote();
+                              },
                               imgPath: "assets/zip.png",
                               title: "  All",
                               count: controller.items.length ?? 0,
@@ -152,9 +157,10 @@ class _HomeViewState extends State<HomeView> {
                                   Image.asset(
                                     'assets/box.png',
                                     color: Colors.white,
-                                    width: 200,
-                                    height: 200,
+                                    width: 150,
+                                    height: 150,
                                   ),
+                                  SizedBox(height: 10),
                                   Text('List is Empty')
                                 ],
                               ),

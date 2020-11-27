@@ -25,6 +25,7 @@ class HeaderView extends StatelessWidget {
               onChange(value);
             },
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15))
                 ),

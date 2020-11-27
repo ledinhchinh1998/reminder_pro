@@ -18,6 +18,7 @@ class SectionMyListCalendar extends StatelessWidget {
     return ListView.separated(
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
+        physics: NeverScrollableScrollPhysics(),
         itemCount: calendars.length,
         separatorBuilder: (BuildContext context, int index) {
           return Divider(

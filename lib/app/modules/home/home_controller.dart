@@ -201,6 +201,7 @@ class HomeController extends GetxController {
     });
     Get.to(CreateScheduleView(
       otherColor: Colors.yellow,
+      titleID: "Scheduled",
     ));
   }
 

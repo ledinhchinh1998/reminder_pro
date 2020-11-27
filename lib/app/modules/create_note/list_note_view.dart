@@ -67,7 +67,7 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${widget.titleID ?? "All"}",
+                  " ${widget.titleID ?? "All"}",
                   style: GoogleFonts.nunito(
                       color: widget.otherColor != null
                           ? widget.otherColor
@@ -94,7 +94,7 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
                           SizedBox(
                             height: 20,
                           ),
-                          Text("List của bạn đang bị rỗng", style: TextStyle(
+                          Text("Your list is empty", style: TextStyle(
                               color: widget.otherColor != null ? widget
                                   .otherColor : Colors.white),)
                         ],
@@ -103,6 +103,7 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
                   } else {
                     return ListView.builder(
                       shrinkWrap: true,
+                      reverse: true,
                       itemBuilder: (context, index) {
                         var item = controller.itemsToTitle.value[index];
                         return ListTile(
@@ -236,27 +237,30 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
                   ),
                   SizedBox(height: 10),
                   SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      onPressed: () {
-                        var item = ScheduleModel(
-                            list: widget.titleID,
-                            isScheduled: 0,
-                            title: controller.textCTLTitle.text,
-                            momentOfReminding: DateFormat('yyyy-MM-dd kk:mm')
-                                .format(controller.now.value),
-                            note: controller.textCTLNote.text,
-                            dateTime: DateFormat('yyyy-MM-dd kk:mm')
-                                .format(controller.now.value));
-                        controller.addNote(
-                            titleID: widget.titleID, scheduleModel: item);
-                        Get.back();
-                      },
-                      child: Icon(
-                        Icons.save_alt,
-                        color: Colors.blue,
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.white,
+                        onPressed: () {
+                          var title = controller.textCTLTitle.text.trimLeft().trimRight();
+                          var item = ScheduleModel(
+                              list: widget.titleID,
+                              isScheduled: 0,
+                              title: title,
+                              momentOfReminding: DateFormat('yyyy-MM-dd kk:mm')
+                                  .format(controller.now.value),
+                              note: controller.textCTLNote.text,
+                              dateTime: DateFormat('yyyy-MM-dd kk:mm')
+                                  .format(controller.now.value));
+                          controller.addNote(
+                              titleID: widget.titleID, scheduleModel: item);
+                          Get.back();
+                        },
+                        child: Icon(
+                          Icons.save_alt,
+                          color: Colors.blue,
+                        ),
                       ),
                     ),
                   )

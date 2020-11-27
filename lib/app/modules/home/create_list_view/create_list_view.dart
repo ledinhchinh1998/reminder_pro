@@ -56,7 +56,7 @@ class _CreateListViewState extends State<CreateListView> {
         ),
         leading:IconButton(
           onPressed:() => Get.back(),
-          icon: Icon(Icons.arrow_back,color: Colors.blue,),
+          icon: Icon(Icons.arrow_back_ios,color: Colors.blue,),
         ),
         centerTitle: true,
         actions: [
@@ -109,6 +109,7 @@ class _CreateListViewState extends State<CreateListView> {
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                     decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                         hintText: 'Enter title',
                         border: InputBorder.none),
                 ),

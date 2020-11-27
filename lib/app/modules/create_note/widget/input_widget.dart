@@ -13,6 +13,8 @@ class InputText extends StatelessWidget {
       elevation: 5,
       shadowColor: Colors.white,
       child: TextField(
+        keyboardType: TextInputType.text,
+        textCapitalization: TextCapitalization.sentences,
         controller: textEditingController,
         decoration: InputDecoration(
             labelText: title,
