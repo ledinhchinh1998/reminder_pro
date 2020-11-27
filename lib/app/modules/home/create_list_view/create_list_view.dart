@@ -102,6 +102,8 @@ class _CreateListViewState extends State<CreateListView> {
                       controller.onTextChangeTitleList(value);
                     },
                     maxLength: 30,
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.sentences,
                     textAlign: TextAlign.center,
                     controller: textEditingController,
                     style: TextStyle(
