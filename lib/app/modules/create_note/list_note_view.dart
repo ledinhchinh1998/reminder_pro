@@ -388,9 +388,8 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                       Switch.adaptive(
                         value: widget.item.isScheduled == 0 ? false : true,
                         onChanged: (value) async {
-                          isShow = value;
-                          print('check $value');
                           if (value) {
+                            print('Check ${dateTime.minute}');
                             widget.item.isScheduled = 1;
                             await controller.zonedScheduleNotification(
                                 year: dateTime.year,
@@ -401,6 +400,7 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                                 title: 'Công việc của bạn ',
                                 body: widget.item.title);
                           }else{
+                            print('Check $value');
                             widget.item.isScheduled = 0;
                             await controller.cancelAllNotifications();
                           }
@@ -434,7 +434,8 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                               ),
                             );
                           },
-                          child: Text("${widget.item.dateTime}"))
+                          child: Text("${DateFormat('yyyy-MM-dd kk:mm')
+                              .format(dateTime)}"))
                     ],
                   ),
                   SizedBox(

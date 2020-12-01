@@ -179,6 +179,9 @@ class _HomeViewState extends State<HomeView> {
                       itemBuilder: (context, index) {
                         var item = controller.itemsFilter.value[index];
                         return ListTile(
+                          onTap: (){
+                            controller.createNote(name: item.list);
+                          },
                           leading: CircularCheckBox(
                             inactiveColor: Colors.white,
                             checkColor: Colors.blue,
@@ -210,6 +213,7 @@ class _HomeViewState extends State<HomeView> {
         child: FloatingActionButton(
           onPressed: () async{
             var text = await Get.to(CreateListView());
+            controller.titleList.value = "";
           },
           child: Icon(Icons.add_circle),
         ),

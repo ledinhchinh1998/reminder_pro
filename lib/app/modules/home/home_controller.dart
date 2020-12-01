@@ -232,8 +232,11 @@ class HomeController extends GetxController {
 
   Future<void> _configureLocalTimeZone() async {
     tz.initializeTimeZones();
-    final timeZoneName = await platform.invokeMethod('getTimeZoneName');
+    var timeZoneName = await platform.invokeMethod('getTimeZoneName');
     print(timeZoneName);
+    if (timeZoneName.toString() == "Asia/Saigon") {
+      timeZoneName = "Asia/Ho_Chi_Minh";
+    }
     tz.setLocalLocation(tz.getLocation(timeZoneName.toString()));
   }
 
