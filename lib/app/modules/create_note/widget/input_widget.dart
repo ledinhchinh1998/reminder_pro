@@ -10,8 +10,6 @@ class InputText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
-      shadowColor: Colors.white,
       child: TextField(
         keyboardType: TextInputType.text,
         textCapitalization: TextCapitalization.sentences,
@@ -19,6 +17,7 @@ class InputText extends StatelessWidget {
         decoration: InputDecoration(
             labelText: title,
             hintText: title,
+            contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10.0),
             border: OutlineInputBorder()
         ),
       ),

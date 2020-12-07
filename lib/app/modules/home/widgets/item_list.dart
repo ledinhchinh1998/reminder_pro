@@ -58,7 +58,7 @@ class ItemCalendar extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '',
+                      '$count',
                       style: TextStyle(color: Colors.grey, fontSize: 18),
                     ),
                     SizedBox(width: 5),

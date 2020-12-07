@@ -1,6 +1,10 @@
+
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:circular_check_box/circular_check_box.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -9,6 +13,7 @@ import 'package:note_app_pro/app/modules/home/home_controller.dart';
 import 'package:note_app_pro/app/modules/home/widgets/section.dart';
 import 'package:note_app_pro/app/themes/style.dart';
 import 'package:note_app_pro/app/utils/color_extension.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../main.dart';
 import 'create_list_view/create_list_view.dart';
 import 'widgets/list_schedule.dart';
@@ -94,7 +99,36 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('REMINDER',style: bodyText,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('REMINDER',style: bodyText,),
+                    IconButton(
+                      onPressed: (){
+                        Get.dialog(AlertDialog(
+                          title: Text('Exit?'),
+                          content: Text('Do you want exit app?'),
+                          actions: [
+                            FlatButton(
+                              child: Text('Cancel'),
+                              onPressed: (){
+                                Get.back();
+                              },
+                            ),
+                            FlatButton(
+                              child: Text('Exit'),
+                              onPressed: (){
+                                _launchURL();
+                                //exit(0);
+                              },
+                            )
+                          ],
+                        ));
+                      },
+                      icon: Icon(Icons.exit_to_app_sharp),
+                    )
+                  ],
+                ),
                 SizedBox(height: 20,),
                 Obx(() {
                   return HeaderView(
@@ -212,7 +246,7 @@ class _HomeViewState extends State<HomeView> {
         preferences: AnimationPreferences(duration: Duration(seconds: 5)),
         child: FloatingActionButton(
           onPressed: () async{
-            var text = await Get.to(CreateListView());
+            await Get.to(CreateListView());
             controller.titleList.value = "";
           },
           child: Icon(Icons.add_circle),
@@ -220,4 +254,13 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+  _launchURL() async {
+    const url = 'https://google.com';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 }

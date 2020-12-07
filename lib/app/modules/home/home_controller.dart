@@ -26,6 +26,7 @@ class HomeController extends GetxController {
   var itemsToTitle = List<ScheduleModel>().obs;
   var key= "".obs;
   var titleList = "".obs;
+  var countToList = 0.obs;
 
   // khong search nua
   void cancelSearch() {
@@ -95,7 +96,7 @@ class HomeController extends GetxController {
       }
     });
     update();
-    return itemsToTitle.length;
+    return itemsToTitle.value.length;
   }
   int getCountSchedule(){
     var itemsToTitle = List<ScheduleModel>().obs;
@@ -105,7 +106,18 @@ class HomeController extends GetxController {
       }
     });
     update();
-    return itemsToTitle.length;
+    return itemsToTitle.value.length;
+  }
+
+  int getCountToList(String list){
+    var itemsToTitle = List<ScheduleModel>().obs;
+    items.value.forEach((note) {
+      if (note.list == list) {
+        itemsToTitle.value.add(note);
+      }
+    });
+    update();
+    return itemsToTitle.value.length;
   }
 
   // get danh sach note hien thi ben ngoai minh hinh Home view
@@ -167,20 +179,23 @@ class HomeController extends GetxController {
 
   Future<void> addNote({String titleID, ScheduleModel scheduleModel}) async {
     await MLDBHelper.insert(scheduleModel);
-    getListNote(titleID: titleID);
-    textCTLNote.clear();
-    textCTLTitle.clear();
-    update();
+    await getListNote(titleID: titleID).then((value){
+      textCTLNote.clear();
+      textCTLTitle.clear();
+      update();
+    });
   }
   void updateNotes({String titleID,ScheduleModel noteModel}) async {
     await MLDBHelper.update(noteModel);
-    getListNote(titleID: titleID);
-    update();
+    await getListNote(titleID: titleID).then((value) {
+      update();
+    });
   }
   void deleteNotes({String titleID,ScheduleModel noteModel}) async {
     await MLDBHelper.delete(noteModel);
-    getListNote(titleID: titleID);
-    update();
+    await getListNote(titleID: titleID).then((value) {
+      update();
+    });
   }
 
   // chuyen man hinh va loc list
@@ -190,6 +205,7 @@ class HomeController extends GetxController {
       titleID: name,
       otherColor: otherColor,
     ));
+    update();
   }
 
   void schedule() {
