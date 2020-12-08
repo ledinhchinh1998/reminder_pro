@@ -1,10 +1,8 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:circular_check_box/circular_check_box.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -89,9 +87,49 @@ class _HomeViewState extends State<HomeView> {
       );
     });
   }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Hello!',style: titleText24BLUE,),
+                  Text('Have a good day')
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Setting'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.star_rate),
+              title: Text('Rate me'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.exit_to_app_sharp),
+              title: Text('Exit'),
+              onTap: () {
+                exit(0);
+              },
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -99,36 +137,9 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('REMINDER',style: bodyText,),
-                    IconButton(
-                      onPressed: (){
-                        Get.dialog(AlertDialog(
-                          title: Text('Exit?'),
-                          content: Text('Do you want exit app?'),
-                          actions: [
-                            FlatButton(
-                              child: Text('Cancel'),
-                              onPressed: (){
-                                Get.back();
-                              },
-                            ),
-                            FlatButton(
-                              child: Text('Exit'),
-                              onPressed: (){
-                                _launchURL();
-                                //exit(0);
-                              },
-                            )
-                          ],
-                        ));
-                      },
-                      icon: Icon(Icons.exit_to_app_sharp),
-                    )
-                  ],
-                ),
+                InkWell(
+                  onTap: () => _scaffoldKey.currentState.openDrawer(),
+                    child: Text('REMINDER',style: bodyText,)),
                 SizedBox(height: 20,),
                 Obx(() {
                   return HeaderView(
@@ -166,7 +177,7 @@ class _HomeViewState extends State<HomeView> {
                           return SectionCalender(
                               onclick: () {
                                 FocusScope.of(context).requestFocus(FocusNode());
-                                controller.createNote();
+                                controller.createNote(name: "All");
                               },
                               imgPath: "assets/zip.png",
                               title: "  All",

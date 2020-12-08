@@ -224,6 +224,7 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
             SizedBox(height: 10),
             SizedBox(height: 10),
             ButtonBorder(
+              title: "Save",
               onPressed: (){
                 var title = controller.textCTLTitle.text.trimLeft().trimRight();
                 if (title.isEmpty) {
@@ -231,7 +232,7 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
                   return;
                 }
                 var item = ScheduleModel(
-                    list: widget.titleID,
+                    list: widget.titleID == null ? "All" : widget.titleID,
                     isScheduled: 0,
                     title: title,
                     momentOfReminding: DateFormat('yyyy-MM-dd kk:mm')
@@ -239,8 +240,7 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
                     note: controller.textCTLNote.text,
                     dateTime: DateFormat('yyyy-MM-dd kk:mm')
                         .format(controller.now.value));
-                controller.addNote(
-                    titleID: widget.titleID, scheduleModel: item);
+                controller.addNote(titleID: widget.titleID == null ? "All" : widget.titleID, scheduleModel: item);
                 Get.back();
               },
             )
@@ -248,6 +248,7 @@ class _CreateScheduleViewState extends State<CreateScheduleView> {
         ),
       );
     })).then((value){
+      print("vao day");
       controller.now.value = DateTime.now();
       setState(() {});
     });

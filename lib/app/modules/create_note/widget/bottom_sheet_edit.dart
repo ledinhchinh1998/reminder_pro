@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:note_app_pro/app/data/model/schedule_model.dart';
 import 'package:note_app_pro/app/modules/home/create_list_view/create_list_view.dart';
 import 'package:note_app_pro/app/modules/home/home_controller.dart';
+import 'package:note_app_pro/app/modules/home/widgets/button_border.dart';
 import 'package:note_app_pro/app/themes/style.dart';
 
 import 'bottom_sheet.dart';
@@ -60,49 +61,16 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            AppBar(
-              backgroundColor: Colors.transparent,
-              leading: IconButton(
-                onPressed: () {
-                  controller.deleteNotes(
-                      titleID: widget.titleID, noteModel: widget.item);
-                  Get.back();
-                },
-                icon: Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                ),
-              ),
-              title: Text('${widget.item.title}', style: styleText24,),
-              centerTitle: true,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    var itemNote = ScheduleModel(
-                      id: widget.item.id,
-                      list: nameFolder.isEmpty ? widget.titleID : nameFolder,
-                      isScheduled: widget.item.isScheduled,
-                      title: textTitleCTL.text,
-                      note: textNoteCTL.text,
-                      momentOfReminding: DateFormat('yyyy-MM-dd kk:mm')
-                          .format(dateTime),
-                      dateTime: DateFormat('yyyy-MM-dd kk:mm')
-                          .format(dateTime),
-                    );
-                    controller.updateNotes(titleID: widget.titleID,noteModel: itemNote);
-                    Get.back();
-                  },
-                  icon: Icon(
-                    Icons.done_outline_rounded,
-                    color: Colors.green,
-                  ),
-                )
-              ],
-            ),
             Container(
               padding: EdgeInsets.all(20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text('${widget.item.title}', style: styleText24,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   InputText(
                     title: 'Title', textEditingController: textTitleCTL,),
                   InputText(title: 'Note', textEditingController: textNoteCTL,),
@@ -234,7 +202,50 @@ class _ShowBottomSheetNoteState extends State<ShowBottomSheetNote> {
                     ),
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: ButtonBorder(
+                          title: "Delete",
+                          color: Colors.red,
+                          onPressed:(){
+                            controller.deleteNotes(
+                                titleID: widget.titleID, noteModel: widget.item);
+                            Get.back();
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Flexible(
+                        child: ButtonBorder(
+                          title: "Save",
+                          color: Colors.blue,
+                          onPressed:(){
+                            var itemNote = ScheduleModel(
+                              id: widget.item.id,
+                              list: nameFolder.isEmpty ? widget.titleID : nameFolder,
+                              isScheduled: widget.item.isScheduled,
+                              title: textTitleCTL.text,
+                              note: textNoteCTL.text,
+                              momentOfReminding: DateFormat('yyyy-MM-dd kk:mm')
+                                  .format(dateTime),
+                              dateTime: DateFormat('yyyy-MM-dd kk:mm')
+                                  .format(dateTime),
+                            );
+                            controller.updateNotes(titleID: widget.titleID,noteModel: itemNote);
+                            Get.back();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                 ],
               ),

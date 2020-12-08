@@ -150,23 +150,30 @@ class HomeController extends GetxController {
   }
 
   Future<void> getListNote({String titleID}) async {
-    items.value.clear();
+    //items.value.clear();
     List<Map<String, dynamic>> noteList = await MLDBHelper.query();
     items.value = noteList.map((data) => ScheduleModel.fromJson(data)).toList();
-    if (titleID == null) {
-      return;
-    }
     itemsToTitle.value.clear();
-    items.value.forEach((note) {
-      if (titleID == note.list) {
-        itemsToTitle.value.add(note);
-      }
-    });
+    if (titleID == "All") {
+      itemsToTitle.value.addAll(items.value);
+    }else if (titleID == "Scheduled"){
+      items.value.forEach((note) {
+        if (0 == note.isScheduled) {
+          itemsToTitle.value.add(note);
+        }
+      });
+    }else{
+      items.value.forEach((note) {
+        if (titleID == note.list) {
+          itemsToTitle.value.add(note);
+        }
+      });
+    }
   }
 
   void getNoteToList(String titleID) {
     itemsToTitle.value.clear();
-    if (titleID == null) {
+    if (titleID == null || titleID == "All") {
       itemsToTitle.addAll(items);
       return;
     }
@@ -179,11 +186,10 @@ class HomeController extends GetxController {
 
   Future<void> addNote({String titleID, ScheduleModel scheduleModel}) async {
     await MLDBHelper.insert(scheduleModel);
-    await getListNote(titleID: titleID).then((value){
-      textCTLNote.clear();
-      textCTLTitle.clear();
-      update();
-    });
+    await getListNote(titleID: titleID);
+    textCTLNote.clear();
+    textCTLTitle.clear();
+    update();
   }
   void updateNotes({String titleID,ScheduleModel noteModel}) async {
     await MLDBHelper.update(noteModel);
